@@ -35,6 +35,6 @@ steps:
     provider: 'azurerm'
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/Container-App'
-    commandOptions: 'tfplan -auto-approve'
+    commandOptions: 'tfplan'
     environmentServiceNameAzureRM: 'ado-terraform-sp'
     environmentAzureRmOverrideSubscriptionID: 'b2179402-44e7-4c0c-ad65-deda2f141e2a'
