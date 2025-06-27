@@ -1,0 +1,40 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+    
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Container-App'
+    backendServiceArm: 'ado-terraform-sp'
+    backendAzureRmOverrideSubscriptionID: 'b2179402-44e7-4c0c-ad65-deda2f141e2a'
+    backendAzureRmResourceGroupName: 'Terraform-POC'
+    backendAzureRmStorageAccountName: 'i2dstgacc'
+    backendAzureRmContainerName: 'terraform'
+    backendAzureRmKey: 'tf/terraform.tfstate'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Container-App'
+    commandOptions: '-out=tfplan'
+    environmentServiceNameAzureRM: 'ado-terraform-sp'
+    environmentAzureRmOverrideSubscriptionID: 'b2179402-44e7-4c0c-ad65-deda2f141e2a'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Container-App'
+    commandOptions: 'tfplan -auto-approve'
+    environmentServiceNameAzureRM: 'ado-terraform-sp'
+    environmentAzureRmOverrideSubscriptionID: 'b2179402-44e7-4c0c-ad65-deda2f141e2a'

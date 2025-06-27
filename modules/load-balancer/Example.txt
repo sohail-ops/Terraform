@@ -1,0 +1,27 @@
+module "lb" {
+  source                = "./modules/load-balancer"
+  lb_name               = var.lb_name
+  location              = module.rg.location
+  rg_name               = module.rg.rg_name
+  fe_ipconfig_name      = "App-PIP"
+  pip_id                = module.lb_pip.pip_id
+  be_pool_name          = "App-BEPool"
+  nic_id                = module.linux_vm.nic_id
+  ip_config_name        = module.linux_vm.nic_ipconfig_name
+
+
+# Already declared in variable defaults so optional to use
+  probe_name            = "http-probe"
+  probe_protocol        = "Http"  or "Https" or "Tcp"
+  probe_port            = 80
+  probe_path            = "/"
+  lb_rule_name          = "http-rule"
+  lb_rule_protocol      = "Tcp"
+  rule_fe_port          = 80
+  rule_be_port          = 80
+  disable_outbound_snat = true          #if using NAT rules needs to be true
+  lb_nat_name           = "SSHAccess"
+  nat_fe_port_start     = 22
+  nat_fe_port_end       = 22
+  nat_be_port           = 22
+}

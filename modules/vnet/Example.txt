@@ -1,0 +1,19 @@
+module "vnet" {
+  source    = "./modules/vnet"
+  rg_name   = module.rg.rg_name
+  location  = module.rg.rg_location
+  tags      = { "Environment" = "Dev" }
+  vnets     = [
+    {
+      vnet_name     = "vnet-1"
+      address_space = ["10.0.0.0/16"]
+      dns_servers   = ["8.8.8.8", "8.8.4.4"] or []
+    },
+    {
+      vnet_name     = "vnet-2"
+      address_space = ["10.1.0.0/16"]
+      dns_servers   = ["1.1.1.1", "1.0.0.1"]
+    }
+  ]
+  depends_on        = [module.rg]
+}

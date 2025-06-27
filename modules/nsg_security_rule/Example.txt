@@ -1,0 +1,50 @@
+# Rules can be created by mentioning them or using defaults and adding extra also
+
+module "nsg_security_rule" {
+  source    = "./modules/nsg_security_rule"
+  rg_name   = module.rg.rg_name
+  nsg_name  = module.linux_vm.nsg_name
+  
+  rules = [
+    {
+      name                   = "Allow-HTTP-IB"
+      priority               = 110
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      source_port_range      = "*"
+      destination_port_range = "80"
+      source_address_prefix  = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = "Deny-RPD-OB"
+      priority                   = 130
+      direction                  = "Outbound"
+      access                     = "Deny"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "3389"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+
+or
+# Combine the default rules and the new custom rule
+  rules = concat(
+    module.nsg_security_rule.default_rules,     # Default rules from the module output
+    [
+      {
+        name                     = "Allow-HTTPS-IB"
+        priority                 = 130
+        direction                = "Inbound"
+        access                   = "Allow"
+        protocol                 = "Tcp"
+        source_port_range        = "*"
+        destination_port_range   = "443"
+        source_address_prefix    = "*"
+        destination_address_prefix = "*"
+      }
+    ])
+}

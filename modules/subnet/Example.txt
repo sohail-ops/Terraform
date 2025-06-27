@@ -1,0 +1,16 @@
+module "subnet" {
+  source    = "./modules/subnet"
+  rg_name   = module.rg.rg_name
+  vnet_name = module.vnet.vnet_names[0]
+  subnets = [
+    {
+      subnet_name     = "subnet-1"
+      address_prefixes = ["10.0.1.0/24"]
+    },
+    {
+      subnet_name     = "subnet-2"
+      address_prefixes = ["10.0.2.0/24"]
+    }
+  ]
+  depends_on = [module.vnet]
+}

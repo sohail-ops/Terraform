@@ -1,0 +1,45 @@
+main.tf
+module "lb_pip" {
+  source            = "./modules/public-ip"
+  pip_name          = "${var.lb_name}-pip"
+  location          = module.rg.rg_location
+  rg_name           = module.rg.rg_name
+  allocation_method = "Static"
+  sku               = "Standard"
+  tags = {
+    "Environment"   = "Dev"
+  }
+
+  depends_on = [module.rg]
+}
+
+# output.tf: 
+# Now you can refer to the public IP's outputs if needed
+output "lb_pip" {
+  description = "The public IP address of Load Balancer"
+  value       = module.lb_pip.pip_address
+}
+
+or
+
+main.tf
+module "vm_pip" {
+  source            = "./modules/public-ip"
+  pip_name          = "${var.lb_name}-pip"
+  location          = module.rg.rg_location
+  rg_name           = module.rg.rg_name
+  allocation_method = "Static"
+  sku               = "Standard"
+  tags = {
+    "Environment"   = "Dev"
+  }
+
+  depends_on = [module.rg]
+}
+
+# output.tf: 
+# Now you can refer to the public IP's outputs if needed
+output "vm_public_ip" {
+  description = "The public IP address of VM"
+  value       = module.vm_pip.pip_address
+}

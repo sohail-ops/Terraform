@@ -1,0 +1,11 @@
+import already present resource group in terraform
+terraform import azurerm_resource_group.rg /subscriptions/subscriptions-id/resourceGroups/temp-rg
+
+terraform import azurerm_container_registry.acr /subscriptions/subscriptions-id/resourceGroups/temp-rg/providers/Microsoft.ContainerRegistry/registries/temp
+
+
+to unset the environment variable
+unset ARM_CLIENT_ID
+unset ARM_CLIENT_SECRET
+unset ARM_TENANT_ID
+unset ARM_SUBSCRIPTION_ID
