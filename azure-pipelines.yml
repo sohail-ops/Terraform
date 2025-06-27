@@ -22,7 +22,7 @@ steps:
     backendAzureRmResourceGroupName: 'Terraform-POC'
     backendAzureRmStorageAccountName: 'i2dstgacc'
     backendAzureRmContainerName: 'terraform'
-    backendAzureRmKey: 'terraform.tfstate'
+    backendAzureRmKey: 'tf/terraform.tfstate'
 
 - task: TerraformTask@5
   displayName: 'Terraform Plan'
